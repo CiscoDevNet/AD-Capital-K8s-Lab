@@ -37,7 +37,7 @@ _validateEnvironmentVars() {
   #echo $VAR_LIST
   for i in "${VAR_LIST[@]}"; do
     echo "$i=${!i}"
-    if [ -z ${!i} ] || [[ "${!i}" == REQUIRED_* ]]; then
+    if [ -z "${!i}" ] || [[ "${!i}" == REQUIRED_* ]]; then
        echo "Please set the Environment variable: $i"; ERROR="1";
     fi
   done
@@ -64,12 +64,12 @@ data:
 EOF
 #####
 
-echo "Create the file $OUTPUT_FILE_NAME"
+echo "Created the file $OUTPUT_FILE_NAME"
 #cat $SECRET_FILE_NAME
 }
 
 
-_makeAppD_K8s_Envvars_file() {
+_makeAppD_K8s_Common_file() {
   _validateEnvironmentVars "AppDynamics Controller" "APPDYNAMICS_AGENT_APPLICATION_NAME" "APPDYNAMICS_CONTROLLER_HOST_NAME" \
                            "APPDYNAMICS_CONTROLLER_PORT" "APPDYNAMICS_CONTROLLER_SSL_ENABLED"
 OUTPUT_FILE_NAME=$FILENAME_APPD_CONFIGMAP
@@ -98,7 +98,7 @@ data:
 EOF
 #####
 
-echo "Create the file $OUTPUT_FILE_NAME"
+echo "Created the file $OUTPUT_FILE_NAME"
 #cat $SECRET_FILE_NAME
 }
 
@@ -139,8 +139,8 @@ case "$CMD_LIST" in
   appd-secrets-create)
     _makeAppD_K8s_Secret_file
     ;;
-  appd-envvars-create)
-    _makeAppD_K8s_Envvars_file
+  appd-common-create)
+    _makeAppD_K8s_Common_file
     ;;
   appd-create-cluster-agent)
     _AppDynamics_Install_ClusterAgent
@@ -169,7 +169,7 @@ case "$CMD_LIST" in
   obsfuscate)
     . envvars.appdynamics.NNN.sh
     _makeAppD_K8s_Secret_file
-    _makeAppD_K8s_Envvars_file
+    _makeAppD_K8s_Common_file
     ;;
   help)
     echo "Commands: "
