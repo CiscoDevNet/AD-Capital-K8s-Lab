@@ -1,0 +1,11 @@
+# This config map is required for ASCAP approvals
+# Fixes issue experiened with different versions of docker/K8s and env var ""
+---
+apiVersion: v1
+data:
+  RETRY: 11s
+  TIMEOUT: 321s
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: adcap-approval
