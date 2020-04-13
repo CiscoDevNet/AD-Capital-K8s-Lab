@@ -29,6 +29,7 @@ fi
 FILENAME_APPD_SECRETS="appdynamics-secrets.yaml"
 FILENAME_APPD_CONFIGMAP="appdynamics-common-configmap.yaml"
 FILENAME_ADCAP_APPROVALS_APPD="adcap-approvals-appdynamics-configmap.yaml"
+FILENAME_APPD_CLUSTER_AGENT_RESOURCE_FILE="cluster-agent.yaml"
 
 _validateEnvironmentVars() {
   echo "Validating environment variables for $1"
@@ -97,6 +98,40 @@ data:
   APPDYNAMICS_NETVIZ_AGENT_PORT: "3892"
 EOF
 #####
+echo "Created the file $OUTPUT_FILE_NAME"
+}
+
+
+_makeAppD_K8s_Cluster_Agent_Resource_File() {
+  _validateEnvironmentVars "AppDynamics Cluster Agent" "APPDYNAMICS_CONTROLLER_HOST_NAME" "APPDYNAMICS_CLUSTER_AGENT_APP_NAME"
+
+OUTPUT_FILE_NAME=$FILENAME_APPD_CLUSTER_AGENT_RESOURCE_FILE
+
+# Note indentation is critical between cat and EOF
+cat << EOF > $OUTPUT_FILE_NAME
+apiVersion: appdynamics.com/v1alpha1
+kind: Clusteragent
+metadata:
+  name: k8s-cluster-agent
+  namespace: appdynamics
+spec:
+  appName: "DDR_ADCAP_1"
+  controllerUrl: "http://$APPDYNAMICS_CONTROLLER_HOST_NAME:8090"
+  account: "$APPDYNAMICS_AGENT_ACCOUNT_NAME"
+  # Use the AppDynamics Published Image
+  image: "appdynamics/cluster-agent:20.3.0"
+  # image: "<your-docker-registry>/appdynamics/cluster-agent:tag"
+  serviceAccountName: appdynamics-cluster-agent
+  ### Uncomment the following two lines if you need pull secrets
+  #imagePullSecrets:
+  #  name: "<your-docker-pull-secret-name>
+  nsToMonitor:
+    - test
+    - default
+    - appdynamics
+    - kube-system
+EOF
+#####
 
 echo "Created the file $OUTPUT_FILE_NAME"
 #cat $SECRET_FILE_NAME
@@ -105,7 +140,6 @@ echo "Created the file $OUTPUT_FILE_NAME"
 
 
 _AppDynamics_Install_ClusterAgent() {
-  #!/bin/bash
   #
   # Create AppDynamics namespace
   $KUBECTL_CMD create namespace appdynamics
@@ -132,6 +166,7 @@ _AppDynamics_Install_ClusterAgent() {
 
 }
 
+
 case "$CMD_LIST" in
   test)
     echo "Test"
@@ -141,6 +176,9 @@ case "$CMD_LIST" in
     ;;
   appd-common-create)
     _makeAppD_K8s_Common_file
+    ;;
+  appd-cluster-agent-resource-file)
+    _makeAppD_K8s_Cluster_Agent_Resource_File
     ;;
   appd-create-cluster-agent)
     _AppDynamics_Install_ClusterAgent
@@ -175,6 +213,7 @@ case "$CMD_LIST" in
     echo "Commands: "
     echo "appd-secrets-create -  create the AppD K8s secret environment variables resource file"
     echo "appd-envvars-create -  create the AppD K8s environment variables resource file"
+    echo "appd-cluster-agent-resource-file - create the Cluster Agent resource file"
     echo "appd-create-cluster-agent - deploy the AppDyamics Cluster Agent"
     echo "adcap-v1 [create | delete ] - create/delete AD-Capital applications version 1 - all nodes"
     echo "adcap-approval [create | delete ] - create/delete AD-Capital Approval node version 2"

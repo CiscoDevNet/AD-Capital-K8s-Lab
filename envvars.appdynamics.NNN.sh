@@ -12,7 +12,7 @@ export APPDYNAMICS_CONTROLLER_PORT="8090"
 export APPDYNAMICS_CONTROLLER_SSL_ENABLED="FALSE"
 
 # AppDynamics Agent Configuration
-export APPDYNAMICS_AGENT_APPLICATION_NAME="adcap-approvals"
+export APPDYNAMICS_AGENT_APPLICATION_NAME="ADCAP_A1"
 
 #
 export APPD_AGENT_BASE_DIR="/opt/appdynamics-agents"
@@ -21,6 +21,8 @@ export APPD_JAVA_AGENT_DIR="/opt/appdynamics-agents/java/javaagent.jar"
 # AD-Capital Environment variables
 export CONTAINER_IMAGE_ADCAP_APPROVALS="lincharles/adcapital-tomcat:v01"
 
+# Cluster Agent Application Name
+export APPDYNAMICS_CLUSTER_AGENT_APP_NAME="ADCAP_C1"
 
 echo "The following environmnent variables have been set:"
 env | grep APPD
