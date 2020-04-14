@@ -12,6 +12,6 @@ This repository contains all of files to complete the AD-Capital K8s labs. The f
 
 `envvars.appdynamics.NNN.sh` - Configure the environment variables in this file to capture all of the parameters to deploy the AppDynamics Cluster Agent for the AppDynamics Controller and K8s Cluster. Used by `ctl.sh`
 
-`ctl.sh` - Helper script that automates many of the tasks to configure and deploy the AD-Capital application to A K8s Cluster
+`ctl.sh` - Helper script that automates many of the tasks to configure and deploy the AD-Capital application to a K8s Cluster
 
 `Utilities` - Other useful scripts
