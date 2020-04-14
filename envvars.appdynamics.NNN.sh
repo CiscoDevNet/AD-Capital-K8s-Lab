@@ -1,4 +1,5 @@
-# Environment variables require for ...
+# Environment variables - Use this file to capture all of the parameters to deploy
+# the AppDynamics Cluster Agent
 
 # Please fill in value for <place holders>
 
