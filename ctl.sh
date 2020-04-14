@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#
+# Automates
 
 
 
@@ -244,17 +244,15 @@ case "$CMD_LIST" in
     _makeAppD_makeConfigMap_original_secrets AD-Capital-K8s-V1/$FILENAME_ORIGINAL_SECRETS
     _makeAppD_makeConfigMap_original_env_map AD-Capital-K8s-V1/$FILENAME_ORIGINAL_ENVMAP
     ;;
-  appd-secrets-create)
-    _makeAppD_makeConfigMap_original_secrets $FILENAME_APPD_SECRETS
-    ;;
-  appd-common-create)
-    _makeAppD_akeConfigMap_appdynamics_common $FILENAME_APPD_CONFIGMAP
-    ;;
   appd-cluster-agent-resource-file)
     _makeAppD_K8s_Cluster_Agent_Resource_File
     ;;
   appd-create-cluster-agent)
     _AppDynamics_Install_ClusterAgent
+    ;;
+  adcap-approval-configure-env)
+    _makeAppD_makeConfigMap_original_secrets AD-Capital-K8s-Approval/$FILENAME_APPD_SECRETS
+    _makeAppD_akeConfigMap_appdynamics_common AD-Capital-K8s-Approval/$FILENAME_APPD_CONFIGMAP
     ;;
   adcap-approval)
     K8S_OP=${2:-"create"} # create | delete | apply
@@ -284,12 +282,16 @@ case "$CMD_LIST" in
     ;;
   help)
     echo "Commands: "
-    echo "appd-secrets-create -  create the AppD K8s secret environment variables resource file"
-    echo "appd-envvars-create -  create the AppD K8s environment variables resource file"
+    echo ""
+    echo "appd-adcap-v1-configure-env - Configure the configMaps in AD-Capital-K8s-V1"
+    echo "appd-harness-configure-env - Configure the configMaps in AD-Capital-K8s-Harness"
+    echo "adcap-approval-configure-env - Configure the configMaps in AD-Capital-K8s-Approval"
+    echo ""
+    echo "adcap-v1 [create | delete ] - create/delete AD-Capital applications version 1 - all nodes"
+    echo "adcap-approval [create | delete ] - create/delete AD-Capital Approvals Deployment"
+    echo ""
     echo "appd-cluster-agent-resource-file - create the Cluster Agent resource file"
     echo "appd-create-cluster-agent - deploy the AppDyamics Cluster Agent"
-    echo "adcap-v1 [create | delete ] - create/delete AD-Capital applications version 1 - all nodes"
-    echo "adcap-approval [create | delete ] - create/delete AD-Capital Approval node version 2"
     ;;
   *)
     echo "Not Found " "$@"
