@@ -177,7 +177,7 @@ metadata:
   name: k8s-cluster-agent
   namespace: appdynamics
 spec:
-  appName: "DDR_ADCAP_1"
+  appName: "$APPDYNAMICS_CLUSTER_AGENT_APP_NAME"
   controllerUrl: "http://$APPDYNAMICS_CONTROLLER_HOST_NAME:8090"
   account: "$APPDYNAMICS_AGENT_ACCOUNT_NAME"
   # Use the AppDynamics Published Image
