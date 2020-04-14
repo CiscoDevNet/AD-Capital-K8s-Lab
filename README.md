@@ -6,7 +6,7 @@ This repository contains all of files to complete the AD-Capital K8s labs. The f
 
 `AD-Capital-K8s-V2` - Contains the tooling to automate the configuration of K8s Resource Definition files in `AD-Capital-K8s-V1`
 
-`AD-Capital-K8s-Harness` - This is a fully instrumented version of the AD-Capital application. It combines the deployment resources from `AD-Capital-K8s-V1` and `AD-Capital-K8s-Approval` in readiness for the Harness section of this labs
+`AD-Capital-K8s-Harness` - This is a fully instrumented independent version of the AD-Capital application. It combines the deployment resources from `AD-Capital-K8s-V1` and `AD-Capital-K8s-Approval` in readiness for the Harness section of this labs
 
 `AD-Capital-K8s-Approval` Contains fully instrumented version of the AD-Capital Approval Pod
 
