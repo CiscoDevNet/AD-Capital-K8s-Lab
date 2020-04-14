@@ -1,0 +1,47 @@
+spec:
+  template:
+    spec:
+      containers:
+      - env:
+        - name: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
+        - name: APPDYNAMICS_AGENT_ACCOUNT_NAME
+        - name: ROLE
+        - name: APPDYNAMICS_AGENT_NODE_NAME
+        - name: APPDYNAMICS_AGENT_TIER_NAME
+        - name: APPD_ANALYTICS_MONITOR
+        - name: APPD_DOCKER_VISIBILITY
+        - name: MACHINE_AGENT_PROPERTIES
+        - name: APPDYNAMICS_NETVIZ_AGENT_HOST
+        image: lincharles/adcapital-tomcat:latest
+        volumeMounts:
+        - mountPath: /hostroot
+        - mountPath: /var/run/docker.sock
+        - mountPath: /project
+        - mountPath: /appdynamics/java-agent
+          name: appdynamics
+        - mountPath: /appdynamics/appdynamics.sh
+          name: appd-env-script
+          subPath: appdynamics.sh    
+      volumes:
+      - name: hostroot
+      - name: docker-sock
+      - name: project
+      - name: appdynamics
+        emptyDir: {}
+      - name: appd-env-script
+        configMap:
+          name: appd-env-script
+          defaultMode: 511          
+      initContainers:
+        - image: appddemo/adcapital-project
+        - image: docker.io/appdynamics/java-agent:latest
+          name: appd-java-agent
+          command:
+            - cp
+            - -ra
+            - /opt/appdynamics/.
+            - /appdynamics/java-agent
+          volumeMounts:
+            - mountPath: /appdynamics/java-agent
+              name: appdynamics
+              
