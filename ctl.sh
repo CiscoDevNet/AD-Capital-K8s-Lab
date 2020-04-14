@@ -167,7 +167,7 @@ echo "Created the file $OUTPUT_FILE_NAME"
 _makeAppD_K8s_Cluster_Agent_Resource_File() {
   _validateEnvironmentVars "AppDynamics Cluster Agent" "APPDYNAMICS_CONTROLLER_HOST_NAME" "APPDYNAMICS_CLUSTER_AGENT_APP_NAME"
 
-OUTPUT_FILE_NAME=$FILENAME_APPD_CLUSTER_AGENT_RESOURCE_FILE
+OUTPUT_FILE_NAME=$1
 
 # Note indentation is critical between cat and EOF
 cat << EOF > $OUTPUT_FILE_NAME
@@ -244,7 +244,7 @@ case "$CMD_LIST" in
     _makeAppD_makeConfigMap_original_env_map AD-Capital-K8s-V1/$FILENAME_ORIGINAL_ENVMAP
     ;;
   appd-cluster-agent-resource-file)
-    _makeAppD_K8s_Cluster_Agent_Resource_File
+    _makeAppD_K8s_Cluster_Agent_Resource_File cluster-agent/$FILENAME_APPD_CLUSTER_AGENT_RESOURCE_FILE
     ;;
   appd-create-cluster-agent)
     _AppDynamics_Install_ClusterAgent
