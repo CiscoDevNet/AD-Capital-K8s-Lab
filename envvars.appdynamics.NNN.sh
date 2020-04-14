@@ -15,7 +15,7 @@ export APPDYNAMICS_CONTROLLER_SSL_ENABLED="FALSE"
 # AppDynamics Agent Configuration
 export APPDYNAMICS_AGENT_APPLICATION_NAME="ADCAP_A1"
 
-#
+# Deployment directory for the Approval Node Init Container
 export APPD_AGENT_BASE_DIR="/opt/appdynamics-agents"
 export APPD_JAVA_AGENT_DIR="/opt/appdynamics-agents/java/javaagent.jar"
 

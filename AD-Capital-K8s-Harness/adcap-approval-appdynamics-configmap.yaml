@@ -1,0 +1,10 @@
+# Environment variables specific to ADCap Approval node
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: adcap-approval-appdynamics
+data:
+  APPDYNAMICS_AGENT_TIER_NAME: "Approvals-V2"
+  APPDYNAMICS_AGENT_NODE_NAME: "Approval-V2"

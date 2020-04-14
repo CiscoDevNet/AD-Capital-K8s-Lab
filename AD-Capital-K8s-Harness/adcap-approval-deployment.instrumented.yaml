@@ -1,0 +1,95 @@
+# Define the Deployment for the approvals application
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: approval
+  labels:
+    app: approval
+    name: approval
+    keel.sh/policy: force
+    keel.sh/trigger: poll
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: approval
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: approval
+      labels:
+        app: approval
+    spec:
+      containers:
+      - name: approval
+        image: lincharles/adcapital-tomcat:latest
+        #image: localhost:5555/adcapital-tomcat:latest
+        envFrom:
+          - configMapRef:
+              name: adcap-approval
+          - configMapRef:
+              name: adcap-approval-appdynamics
+          - configMapRef:
+              name: appdynamics-common
+          - secretRef:
+              name: appdynamics-secrets
+        imagePullPolicy: Always
+        env:
+        - name: ROLE
+          value: approval
+        ports:
+        - containerPort: 8080
+        resources: {}
+        volumeMounts:
+        - mountPath: /hostroot
+          name: hostroot
+          readOnly: true
+        - mountPath: /project
+          name: project
+        - mountPath: /opt/appdynamics-agents/java
+          name: appd-agent-java-install
+      restartPolicy: Always
+      volumes:
+      - name: hostroot
+        hostPath:
+          path: /
+          type: Directory
+      - name: project
+      - name: appd-agent-java-install
+      initContainers:
+        - name: provider
+          image: lincharles/adcapital-project:v01
+          volumeMounts:
+          - mountPath: /project
+            name: project
+        - name: appdynamics-java-agent
+          image: appdynamics/java-agent:20.3.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - cp
+            - -ra
+            - /opt/appdynamics/.
+            - /opt/appdynamics-agents/java/
+          volumeMounts:
+          - mountPath: /opt/appdynamics-agents/java
+            name: appd-agent-java-install
+status: {}
+# Define the Service for the approvals Pod
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: approval
+  name: approval
+spec:
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: approval
+status:
+  loadBalancer: {}
