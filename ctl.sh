@@ -273,11 +273,6 @@ case "$CMD_LIST" in
     $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/verification-deployment.yaml
     $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/approval-deployment.yaml
     $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/load-deployment.yaml
-     ;;
-  obsfuscate)
-    . envvars.appdynamics.NNN.sh
-    _makeAppD_K8s_Secret_file
-    _makeAppD_K8s_Common_file
     ;;
   help)
     echo "Commands: "
