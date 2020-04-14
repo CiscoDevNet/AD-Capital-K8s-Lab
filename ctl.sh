@@ -40,7 +40,7 @@ _validateEnvironmentVars() {
   VAR_LIST=("$@") # rebuild using all args
   #echo $VAR_LIST
   for i in "${VAR_LIST[@]}"; do
-    echo "$i=${!i}"
+    echo "  $i=${!i}"
     if [ -z "${!i}" ] || [[ "${!i}" == REQUIRED_* ]]; then
        echo "Please set the Environment variable: $i"; ERROR="1";
     fi
@@ -75,7 +75,7 @@ echo "Created the file $OUTPUT_FILE_NAME"
 _makeAppD_makeConfigMap_original_secrets() {
   _validateEnvironmentVars "AppDynamics Controller" "APPDYNAMICS_AGENT_ACCOUNT_NAME" "APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY"
 OUTPUT_FILE_NAME=$1
-
+set -e
 # Note indentation is critical between cat and EOF
 cat << EOF > $OUTPUT_FILE_NAME
 # Environment varibales requried for ADCAP approvals - Secret Base64 Encoded
@@ -100,7 +100,7 @@ _makeAppD_makeConfigMap_appdynamics_common() {
   _validateEnvironmentVars "AppDynamics Controller" "APPDYNAMICS_AGENT_APPLICATION_NAME" "APPDYNAMICS_CONTROLLER_HOST_NAME" \
                            "APPDYNAMICS_CONTROLLER_PORT" "APPDYNAMICS_CONTROLLER_SSL_ENABLED"
 OUTPUT_FILE_NAME=$1
-
+set -e
 # Note indentation is critical between cat and EOF
 cat << EOF > $OUTPUT_FILE_NAME
 # Environment variables common across all AppDynamics Agents -  Clear Text
@@ -132,7 +132,7 @@ _makeAppD_makeConfigMap_original_env_map() {
   _validateEnvironmentVars "AppDynamics Controller" "APPDYNAMICS_AGENT_APPLICATION_NAME" "APPDYNAMICS_CONTROLLER_HOST_NAME" \
                            "APPDYNAMICS_CONTROLLER_PORT" "APPDYNAMICS_CONTROLLER_SSL_ENABLED"
 OUTPUT_FILE_NAME=$1
-
+set -e
 # Note indentation is critical between cat and EOF
 cat << EOF > $OUTPUT_FILE_NAME
 # Environment variables common across all AppDynamics Agents -  Clear Text
@@ -164,11 +164,11 @@ echo "Created the file $OUTPUT_FILE_NAME"
 
 #APPD_JAVAAGENT: "-javaagent:/opt/appdynamics-agents/java/javaagent.jar"
 
-_makeAppD_K8s_Cluster_Agent_Resource_File() {
+_makeAppD_makeConfigMap_Cluster_Agent() {
   _validateEnvironmentVars "AppDynamics Cluster Agent" "APPDYNAMICS_CONTROLLER_HOST_NAME" "APPDYNAMICS_CLUSTER_AGENT_APP_NAME"
 
 OUTPUT_FILE_NAME=$1
-
+set -e
 # Note indentation is critical between cat and EOF
 cat << EOF > $OUTPUT_FILE_NAME
 apiVersion: appdynamics.com/v1alpha1
@@ -243,8 +243,8 @@ case "$CMD_LIST" in
     _makeAppD_makeConfigMap_original_secrets AD-Capital-K8s-V1/$FILENAME_ORIGINAL_SECRETS
     _makeAppD_makeConfigMap_original_env_map AD-Capital-K8s-V1/$FILENAME_ORIGINAL_ENVMAP
     ;;
-  appd-cluster-agent-resource-file)
-    _makeAppD_K8s_Cluster_Agent_Resource_File cluster-agent/$FILENAME_APPD_CLUSTER_AGENT_RESOURCE_FILE
+  appd-cluster-agent-configure-env)
+    _makeAppD_makeConfigMap_Cluster_Agent cluster-agent/$FILENAME_APPD_CLUSTER_AGENT_RESOURCE_FILE
     ;;
   appd-create-cluster-agent)
     _AppDynamics_Install_ClusterAgent
@@ -284,7 +284,7 @@ case "$CMD_LIST" in
     echo "adcap-v1 [create | delete ] - create/delete AD-Capital applications version 1 - all nodes"
     echo "adcap-approval [create | delete ] - create/delete AD-Capital Approvals Deployment"
     echo ""
-    echo "appd-cluster-agent-resource-file - create the Cluster Agent resource file"
+    echo "appd-cluster-agent-configure-env - create the Cluster Agent resource file"
     echo "appd-create-cluster-agent - deploy the AppDyamics Cluster Agent"
     ;;
   *)
