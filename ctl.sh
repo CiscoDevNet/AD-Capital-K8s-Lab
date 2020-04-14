@@ -165,7 +165,8 @@ echo "Created the file $OUTPUT_FILE_NAME"
 #APPD_JAVAAGENT: "-javaagent:/opt/appdynamics-agents/java/javaagent.jar"
 
 _makeAppD_makeConfigMap_Cluster_Agent() {
-  _validateEnvironmentVars "AppDynamics Cluster Agent" "APPDYNAMICS_CONTROLLER_HOST_NAME" "APPDYNAMICS_CLUSTER_AGENT_APP_NAME"
+  _validateEnvironmentVars "AppDynamics Cluster Agent" "APPDYNAMICS_CONTROLLER_HOST_NAME" \
+          "APPDYNAMICS_CLUSTER_AGENT_APP_NAME" "APPDYNAMICS_AGENT_ACCOUNT_NAME"
 
 OUTPUT_FILE_NAME=$1
 set -e
