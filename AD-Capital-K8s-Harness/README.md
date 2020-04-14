@@ -18,7 +18,7 @@ env-configmap.yaml
 appdynamics-secrets.yaml
 appdynamics-common-configmap.yaml
 ````
-Delete the currently deploy AD-Capital application from the cluster, and any configMap and imagePullSecrets
+Delete the currently deploy AD-Capital application from the cluster, and any configMap and Secrets
 
 Deploy the application to the cluster using the command:
 `kubectl create -f AD-Capital-K8s-Harness`
