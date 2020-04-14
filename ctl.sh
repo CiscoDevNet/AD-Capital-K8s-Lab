@@ -1,9 +1,8 @@
 #!/bin/bash
 #
-# Automates
-
-
-
+# Automates many of the tasks to configure and deploy the AD-Capital applicaiton to A K8s Cluster
+#
+#
 CMD_LIST=${1:-"help"}
 
 # Check docker: Linux or Ubuntu snap
