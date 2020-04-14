@@ -1,0 +1,67 @@
+# Requires configmap appd-env-script-config.yaml
+spec:
+  template:
+    spec:
+      containers:
+      - image: lincharles/adcapital-tomcat:latest
+        env:
+        - name: ROLE
+        - name: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: accesskey
+              name: mysecret
+        - name: APPDYNAMICS_AGENT_ACCOUNT_NAME
+          valueFrom:
+            secretKeyRef:
+              key: accountname
+              name: mysecret
+        - name: APPDYNAMICS_AGENT_NODE_NAME
+          value: approval
+        - name: APPDYNAMICS_AGENT_TIER_NAME
+          value: Approval-Services
+        - name: APPD_ANALYTICS_MONITOR
+          value: "true"
+        - name: APPDYNAMICS_NETVIZ_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        envFrom:
+          - configMapRef:
+              name: env-map
+        volumeMounts:
+        - mountPath: /hostroot
+        - mountPath: /project
+        - mountPath: /var/run/docker.sock
+          name: docker-sock
+        - mountPath: /appdynamics/java-agent
+          name: appdynamics
+        - mountPath: /appdynamics/appdynamics.sh
+          name: appd-env-script
+          subPath: appdynamics.sh    
+      volumes:
+      - name: hostroot
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
+          type: Socket
+      - name: project
+      - name: appdynamics
+        emptyDir: {}
+      - name: appd-env-script
+        configMap:
+          name: appd-env-script
+          defaultMode: 511          
+      initContainers:
+        - image: appddemo/adcapital-project
+        - image: docker.io/appdynamics/java-agent:latest
+          name: appd-java-agent
+          command:
+            - cp
+            - -ra
+            - /opt/appdynamics/.
+            - /appdynamics/java-agent
+          volumeMounts:
+            - mountPath: /appdynamics/java-agent
+              name: appdynamics
+              
