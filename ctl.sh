@@ -219,7 +219,7 @@ _AppDynamics_Install_ClusterAgent() {
   $KUBECTL_CMD config set-context --current --namespace=appdynamics
 
   # Deploy the AppDynamics Cluster Agent Operator
-  $KUBECTL_CMD create -f cluster-agent-operator.yaml
+  $KUBECTL_CMD create -f $DIR_CLUSTER_AGENT/cluster-agent-operator.yaml
 
   # Delete the secret to make sure
   $KUBECTL_CMD --namespace=appdynamics delete secret cluster-agent-secret
