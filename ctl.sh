@@ -255,8 +255,8 @@ case "$CMD_LIST" in
     _makeAppD_makeConfigMap_original_env_map AD-Capital-K8s-V1/$FILENAME_ORIGINAL_ENVMAP
     ;;
   appd-cluster-agent-configure-env)
-    _checkDirExists "Cluster Agent Install" $DIR_CLUSTER_AGENT/cluster-agent.yaml
-    _makeAppD_makeConfigMap_Cluster_Agent $DIR_CLISTER_AGENT/$FILENAME_APPD_CLUSTER_AGENT_RESOURCE_FILE
+    _checkDirExists "Cluster Agent Install" $DIR_CLUSTER_AGENT
+    _makeAppD_makeConfigMap_Cluster_Agent $DIR_CLUSTER_AGENT/$FILENAME_APPD_CLUSTER_AGENT_RESOURCE_FILE
     ;;
   appd-create-cluster-agent)
     _AppDynamics_Install_ClusterAgent
