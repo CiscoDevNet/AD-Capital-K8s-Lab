@@ -5,6 +5,7 @@
 # Location of the AppDynamics Platform Admin Command
 PADMIN=~/appdynamics/platform/platform-admin/bin/platform-admin.sh
 #
+# Platform Admin user/pwd
 PADMIN_USER="admin"
 PADMIN_PWD="appd"
 #
