@@ -23,6 +23,8 @@ if [ -d $KUBECTL_CMD ]; then
     exit 1
 fi
 
+# Directories relative to AD-Capital-K8s-Lab
+DIR_CLUSTER_AGENT="cluster-agent"
 
 # Output file names
 FILENAME_APPD_SECRETS="appdynamics-secrets.yaml"
@@ -200,9 +202,17 @@ echo "Created the file $OUTPUT_FILE_NAME"
 #cat $SECRET_FILE_NAME
 }
 
-
+_checkDirExists() {
+  DIR_DESCRIPTION=$1
+  DIR_TO_CHECK=$2
+  if [ ! -d "$DIR_TO_CHECK" ]; then
+    echo "Directory for $DIR_DESCRIPTION does not exist, expected $DIR_TO_CHECK"
+    echo "Exiting"; exit 1;
+  fi
+}
 
 _AppDynamics_Install_ClusterAgent() {
+  _checkDirExists "Cluster Agent Install" $DIR_CLUSTER_AGENT
   #
   # Create AppDynamics namespace
   $KUBECTL_CMD create namespace appdynamics
@@ -216,13 +226,13 @@ _AppDynamics_Install_ClusterAgent() {
 
   # Create the secret
   $KUBECTL_CMD -n appdynamics create secret generic cluster-agent-secret --from-literal=controller-key="$APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY"
-  sleep 5 - allow time for secret to create
+  sleep 5 # Allow time for secret to create
 
   # Validate the secret has been created
   $KUBECTL_CMD get secret --namespace=appdynamics
 
   # Deploy the AppDynamics Cluster Agent
-  $KUBECTL_CMD create -f cluster-agent.yaml
+  $KUBECTL_CMD create -f $DIR_CLUSTER_AGENT/cluster-agent.yaml
 
   # Validate the Cluster Agent Pod has been created and is running, allow 1 minute for this to happen
   $KUBECTL_CMD -n appdynamics get pods
@@ -245,7 +255,8 @@ case "$CMD_LIST" in
     _makeAppD_makeConfigMap_original_env_map AD-Capital-K8s-V1/$FILENAME_ORIGINAL_ENVMAP
     ;;
   appd-cluster-agent-configure-env)
-    _makeAppD_makeConfigMap_Cluster_Agent cluster-agent/$FILENAME_APPD_CLUSTER_AGENT_RESOURCE_FILE
+    _checkDirExists "Cluster Agent Install" $DIR_CLUSTER_AGENT
+    _makeAppD_makeConfigMap_Cluster_Agent $DIR_CLISTER_AGENT/$FILENAME_APPD_CLUSTER_AGENT_RESOURCE_FILE
     ;;
   appd-create-cluster-agent)
     _AppDynamics_Install_ClusterAgent
