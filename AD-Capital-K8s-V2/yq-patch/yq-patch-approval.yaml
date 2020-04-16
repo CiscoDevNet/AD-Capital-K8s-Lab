@@ -54,7 +54,7 @@ spec:
           defaultMode: 511          
       initContainers:
         - image: appddemo/adcapital-project
-        - image: docker.io/appdynamics/java-agent:latest
+        - image: docker.io/appdynamics/java-agent:20.3.0
           name: appd-java-agent
           command:
             - cp
