@@ -3,6 +3,7 @@ Description=AppDynamics Controller
 After=multi-user.target
 
 [Service]
+User=centos
 Type=oneshot
 RemainAfterExit=yes
 TimeoutSec=300

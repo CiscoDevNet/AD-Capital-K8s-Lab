@@ -26,7 +26,6 @@ case "$CMD_LIST" in
     echo "Test"
     ;;
   start)
-    sudo su - centos
     $PADMIN start-platform-admin
     $PADMIN login --user-name $PADMIN_USER --password $PADMIN_PWD
     $PADMIN list-platforms
@@ -35,7 +34,6 @@ case "$CMD_LIST" in
     $PADMIN submit-job --platform-name MyPlatform --service events-service --job start
     ;;
   stop)
-    sudo su - centos
     $PADMIN login --user-name $PADMIN_USER --password $PADMIN_PWD
     $PADMIN list-platforms
     $PADMIN submit-job --platform-name MyPlatform --service events-service --job stop
