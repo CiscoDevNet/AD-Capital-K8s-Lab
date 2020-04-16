@@ -35,8 +35,7 @@ data:
         -Dappdynamics.agent.accountAccessKey=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}\
         -Dappdynamics.agent.applicationName=${APPDYNAMICS_AGENT_APPLICATION_NAME}\
         -Dappdynamics.agent.tierName=${APPDYNAMICS_AGENT_TIER_NAME}\
-        -Dappdynamics.agent.nodeName=${APPDYNAMICS_AGENT_NODE_NAME}\
-        -Dappdynamics.analytics.agent.url=http://localhost:9090/v2/sinks/bt"
+        -Dappdynamics.agent.nodeName=${APPDYNAMICS_AGENT_NODE_NAME}"
         echo "APPD_PROPERTIES: ${APPD_PROPERTIES}"
     else
         echo "AppDynamics configuration error - Running without monitoring enabled"
