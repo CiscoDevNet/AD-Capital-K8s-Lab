@@ -8,12 +8,12 @@ metadata:
     keel.sh/policy: force
     keel.sh/trigger: poll
 spec:
-  # replicas: 2
-  # strategy:
-  #   type: Recreate
+  replicas: 1
   selector:
     matchLabels:
       app: rest
+  strategy:
+    type: Recreate
   template:
     metadata:
       name: rest
@@ -36,17 +36,14 @@ spec:
           value: rest
         - name: APPDYNAMICS_AGENT_NODE_NAME
           value: Authentication-Service
+        - name: APPDYNAMICS_AGENT_TIER_NAME
+          value: Authentication-Service
         - name: APPD_ANALYTICS_MONITOR
           value: "true"
         - name: APPD_DOCKER_VISIBILITY
           value: "true"
         - name: MACHINE_AGENT_PROPERTIES
           value: "-Dappdynamics.sim.enabled=true -Dappdynamics.docker.enabled=true"
-          # valueFrom:
-          #   fieldRef:
-          #     fieldPath: metadata.name
-        - name: APPDYNAMICS_AGENT_TIER_NAME
-          value: Authentication-Service
         - name: APPDYNAMICS_NETVIZ_AGENT_HOST
           valueFrom:
             fieldRef:
