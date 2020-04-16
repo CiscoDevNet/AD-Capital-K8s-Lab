@@ -44,6 +44,9 @@ spec:
         image: lincharles/adcapital-tomcat:latest
         imagePullPolicy: Always
         # Modification-1 - Add Configuration Maps for Environment Variables
+        envFrom:
+          - configMapRef:
+              name: adcap-approval
         # End Modification-1
         env:
         - name: ROLE
