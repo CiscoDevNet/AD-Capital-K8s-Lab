@@ -3,7 +3,7 @@
 # This Resource definition has been modifed to instrument the Approval application
 # with the lastest AppDynamics Java Agent using the initialization container method
 #
-# Note this POD is named approval-v3
+# Note this POD is named approval-v2
 #
 # The configuration map have been named as follows:
 # adcap-approval
