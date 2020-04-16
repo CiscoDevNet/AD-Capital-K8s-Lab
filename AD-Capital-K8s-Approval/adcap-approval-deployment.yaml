@@ -35,7 +35,8 @@ spec:
       - name: approval
         image: lincharles/adcapital-tomcat:latest
         imagePullPolicy: Always
-        #image: appddemo/adcapital-tomcat:latest
+        # Modification-1 - Add Configuration Maps for Environment Variables
+        # End Modification-1
         env:
         - name: ROLE
           value: approval
@@ -48,6 +49,8 @@ spec:
           readOnly: true
         - mountPath: /project
           name: project
+        # Modification-2 - Add a Mount Path
+        # End Modification-2
       restartPolicy: Always
       volumes:
       - name: hostroot
@@ -55,12 +58,16 @@ spec:
           path: /
           type: Directory
       - name: project
+      # Modification-3 - Add a Container Volume
+      # End Modification-3
       initContainers:
         - image: appddemo/adcapital-project
           name: provider
           volumeMounts:
           - mountPath: /project
             name: project
+        # Modification-4 - Add Second Initialization Container
+        # End Modification-4
 status: {}
 # Service
 ---

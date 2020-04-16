@@ -1,4 +1,12 @@
-# Define the Deployment for the approvals application
+# AD-Capital Approval Node
+#
+# This Resource definition has been modifed to instrument the Approval application
+# with the lastest AppDynamics Java Agent using the initialization container method
+# The configuration map have been named as follows:
+# adcap-approval
+# adcap-approcal-appdynamics
+# appdynamics-common
+# appdynamics-secret
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -25,7 +33,8 @@ spec:
       containers:
       - name: approval
         image: lincharles/adcapital-tomcat:latest
-        #image: localhost:5555/adcapital-tomcat:latest
+        imagePullPolicy: Always
+        # Modification-1 - Add Configuration Maps Environment Variables
         envFrom:
           - configMapRef:
               name: adcap-approval
@@ -35,7 +44,7 @@ spec:
               name: appdynamics-common
           - secretRef:
               name: appdynamics-secrets
-        imagePullPolicy: Always
+        # End Modification-1
         env:
         - name: ROLE
           value: approval
@@ -48,8 +57,10 @@ spec:
           readOnly: true
         - mountPath: /project
           name: project
+        # Modification-2 - Add a Mount Path
         - mountPath: /opt/appdynamics-agents/java
           name: appd-agent-java-install
+        # End Modification-2
       restartPolicy: Always
       volumes:
       - name: hostroot
@@ -57,13 +68,16 @@ spec:
           path: /
           type: Directory
       - name: project
+      # Modification-3 - Add a Container Volume
       - name: appd-agent-java-install
+      # End Modification-3
       initContainers:
         - name: provider
           image: lincharles/adcapital-project:v01
           volumeMounts:
           - mountPath: /project
             name: project
+        # Modification-4 - Add Second Initialization Container
         - name: appdynamics-java-agent
           image: appdynamics/java-agent:20.3.0
           imagePullPolicy: IfNotPresent
@@ -75,6 +89,7 @@ spec:
           volumeMounts:
           - mountPath: /opt/appdynamics-agents/java
             name: appd-agent-java-install
+        # End Modification-4
 status: {}
 # Define the Service for the approvals Pod
 ---
