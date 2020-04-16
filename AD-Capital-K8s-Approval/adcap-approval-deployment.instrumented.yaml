@@ -14,27 +14,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: approval-v3
+  name: approval-v2
   labels:
-    app: approval-v3
-    name: approval-v3
+    app: approval-v2
+    name: approval-v2
     keel.sh/policy: force
     keel.sh/trigger: poll
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: approval-v3
+      app: approval-v2
   strategy:
     type: Recreate
   template:
     metadata:
-      name: approval-v3
+      name: approval-v2
       labels:
-        app: approval-v3
+        app: approval-v2
     spec:
       containers:
-      - name: approval-v3
+      - name: approval-v2
         image: lincharles/adcapital-tomcat:latest
         imagePullPolicy: Always
         # Modification-1 - Add Configuration Maps Environment Variables
@@ -100,14 +100,14 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: approval-v3
-  name: approval-v3
+    app: approval-v2
+  name: approval-v2
 spec:
   ports:
   - name: "8080"
     port: 8080
     targetPort: 8080
   selector:
-    app: approval-v3
+    app: approval-v2
 status:
   loadBalancer: {}
