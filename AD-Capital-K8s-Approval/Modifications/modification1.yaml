@@ -1,0 +1,11 @@
+        # Modification-1 - Add Configuration Maps Environment Variables
+        envFrom:
+          - configMapRef:
+              name: adcap-approval
+          - configMapRef:
+              name: adcap-approval-appdynamics
+          - configMapRef:
+              name: appdynamics-common
+          - secretRef:
+              name: appdynamics-secrets
+        # End Modification-1
