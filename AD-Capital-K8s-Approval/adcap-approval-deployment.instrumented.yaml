@@ -2,6 +2,9 @@
 #
 # This Resource definition has been modifed to instrument the Approval application
 # with the lastest AppDynamics Java Agent using the initialization container method
+#
+# Note this POD is named approval-v3
+#
 # The configuration map have been named as follows:
 # adcap-approval
 # adcap-approcal-appdynamics
@@ -11,27 +14,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: approval
+  name: approval-v3
   labels:
-    app: approval
-    name: approval
+    app: approval-v3
+    name: approval-v3
     keel.sh/policy: force
     keel.sh/trigger: poll
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: approval
+      app: approval-v3
   strategy:
     type: Recreate
   template:
     metadata:
-      name: approval
+      name: approval-v3
       labels:
-        app: approval
+        app: approval-v3
     spec:
       containers:
-      - name: approval
+      - name: approval-v3
         image: lincharles/adcapital-tomcat:latest
         imagePullPolicy: Always
         # Modification-1 - Add Configuration Maps Environment Variables
@@ -97,14 +100,14 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: approval
-  name: approval
+    app: approval-v3
+  name: approval-v3
 spec:
   ports:
   - name: "8080"
     port: 8080
     targetPort: 8080
   selector:
-    app: approval
+    app: approval-v3
 status:
   loadBalancer: {}

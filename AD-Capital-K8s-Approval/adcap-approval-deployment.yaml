@@ -4,6 +4,14 @@
 # performance and security issues that have been resolved in the version V2 image lincharles/adcapital-tomcat:latest
 # The V2 image appears to not have been instrumented with AppDynamics
 #
+# Modify this Deploment definition to include:
+#  Modification-1 - Add Configuration Maps Environment Variables
+#  Modification-2 - Add a Mount Path
+#  Modification-3 - Add a Container Volume
+#  Modification-4 - Add Second Initialization Container
+#
+# Note this POD is named approval-v2
+#
 # Update History
 # V1 - appddemo/adcapital-tomcat:latest
 # V2 - lincharles/adcapital-tomcat:latest
@@ -12,27 +20,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: approval
+  name: approval-v2
   labels:
-    app: approval
-    name: approval
+    app: approval-v2
+    name: approval-v2-v2
     keel.sh/policy: force
     keel.sh/trigger: poll
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: approval
+      app: approval-v2
   strategy:
     type: Recreate
   template:
     metadata:
-      name: approval
+      name: approval-v2
       labels:
-        app: approval
+        app: approval-v2
     spec:
       containers:
-      - name: approval
+      - name: approval-v2
         image: lincharles/adcapital-tomcat:latest
         imagePullPolicy: Always
         # Modification-1 - Add Configuration Maps for Environment Variables
@@ -69,20 +77,20 @@ spec:
         # Modification-4 - Add Second Initialization Container
         # End Modification-4
 status: {}
-# Service
+# Define the Service for the approvals Pod
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: approval
-  name: approval
+    app: approval-v2
+  name: approval-v2
 spec:
   ports:
   - name: "8080"
     port: 8080
     targetPort: 8080
   selector:
-    app: approval
+    app: approval-v2
 status:
   loadBalancer: {}
