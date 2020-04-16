@@ -37,8 +37,8 @@ case "$CMD_LIST" in
     $PADMIN login --user-name $PADMIN_USER --password $PADMIN_PWD
     $PADMIN list-platforms
     $PADMIN submit-job --platform-name MyPlatform --service events-service --job stop
-    $PADMIN stop-controller-db
     $PADMIN stop-controller-appserver
+    $PADMIN stop-controller-db
     ;;
   install)
     _installService "appd-controller"
