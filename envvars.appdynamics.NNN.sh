@@ -20,7 +20,8 @@ export APPD_AGENT_BASE_DIR="/opt/appdynamics-agents"
 export APPD_JAVA_AGENT_DIR="/opt/appdynamics-agents/java/javaagent.jar"
 
 # AD-Capital Environment variables
-export CONTAINER_IMAGE_ADCAP_APPROVALS="lincharles/adcapital-tomcat:v01"
+export ADCAP_K8S_NAMESPACE="se-days"
+export ADCAP_APPROVALS_CONTAINER_IMAGE="lincharles/adcapital-tomcat:v01"
 
 # Cluster Agent Application Name
 export APPDYNAMICS_CLUSTER_AGENT_APP_NAME="ADCAP_C1"
