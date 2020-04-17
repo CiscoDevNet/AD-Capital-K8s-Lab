@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: approval
-        image: lincharles/adcapital-tomcat:latest
+        image: kevinbappd/adcapital-tomcat:latest
         imagePullPolicy: Always
         #image: appddemo/adcapital-tomcat:latest
         env:
@@ -61,7 +61,7 @@ spec:
       - name: appdynamics
       - name: project
       initContainers:
-        - image: appddemo/adcapital-project
+        - image: kevinbappd/adcapital-project
           name: provider
           volumeMounts:
           - mountPath: /project
