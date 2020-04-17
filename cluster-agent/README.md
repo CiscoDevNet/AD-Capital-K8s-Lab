@@ -1,6 +1,6 @@
 # AD-Capital-K8s-Lab/cluster-agent
 
-Empty directory. Unzip the AppDynamics Cluster agent directory into this directory.
+Empty directory. Unzip the AppDynamics Cluster agent directly into this directory.
 
 Download the AppDynamics Ubuntu cluster agent from: [AppDynamics Downloads](https://download.appdynamics.com/download/#version=&apm=cluster-agent&os=&platform_admin_os=&appdynamics_cluster_os=&events=&eum=&page=1
 ) into this directory
