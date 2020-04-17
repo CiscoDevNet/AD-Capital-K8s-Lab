@@ -9,14 +9,14 @@ spec:
   - env:
     - name: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
       valueFrom:
-        configMapKeyRef:
-          key: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
-          name: env-map
+        secretKeyRef:
+          key: accesskey
+          name: mysecret
     - name: APPDYNAMICS_AGENT_ACCOUNT_NAME
       valueFrom:
-        configMapKeyRef:
-          key: APPDYNAMICS_AGENT_ACCOUNT_NAME
-          name: env-map
+        secretKeyRef:
+          key: accountname
+          name: mysecret
     envFrom:
       - configMapRef:
           name: env-map
