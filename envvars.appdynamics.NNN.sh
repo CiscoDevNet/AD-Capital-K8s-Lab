@@ -25,6 +25,11 @@ export ADCAP_APPROVALS_CONTAINER_IMAGE="lincharles/adcapital-tomcat:v01"
 
 # Cluster Agent Application Name
 export APPDYNAMICS_CLUSTER_AGENT_APP_NAME="ADCAP_C1"
+export APPDYNAMICS_CLUSTER_AGENT_APPLICATION_NAME="ADCAP_C1"
+export APPDYNAMICS_CLUSTER_AGENT_PROXY_HOST=""
+export APPDYNAMICS_CLUSTER_AGENT_PROXY_PORT=""
+export APPDYNAMICS_CLUSTER_AGENT_PROXY_USER=""
+export APPDYNAMICS_CLUSTER_AGENT_PROXY_PWD=""
 
 echo "The following environmnent variables have been set:"
 env | grep APPD
