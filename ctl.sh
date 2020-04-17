@@ -191,7 +191,7 @@ spec:
   #imagePullSecrets:
   #  name: "<your-docker-pull-secret-name>
   nsToMonitor:
-    - test
+    - se-days
     - default
     - appdynamics
     - kube-system
@@ -213,7 +213,6 @@ _AppDynamics_Install_ClusterAgent() {
   #
   # Create AppDynamics namespace
   $KUBECTL_CMD create namespace appdynamics
-  $KUBECTL_CMD config set-context --current --namespace=appdynamics
 
   # Deploy the AppDynamics Cluster Agent Operator
   $KUBECTL_CMD create -f $DIR_CLUSTER_AGENT/cluster-agent-operator.yaml
@@ -264,6 +263,8 @@ case "$CMD_LIST" in
     ;;
   adcap-approval)
     K8S_OP=${2:-"create"} # create | delete | apply
+    $KUBECTL_CMD config set-context --current --namespace=$ADCAP_K8S_NAMESPACE
+    $KUBECTL_CMD config view --minify | grep namespace
     $KUBECTL_CMD $K8S_OP -f adcap-approval-deployment.yaml
     $KUBECTL_CMD $K8S_OP -f adcap-approval-configmap.yaml
     $KUBECTL_CMD $K8S_OP -f $FILENAME_APPD_SECRETS
@@ -272,6 +273,8 @@ case "$CMD_LIST" in
     ;;
   adcap-v1)
     K8S_OP=${2:-"create"} # create | delete | apply
+    $KUBECTL_CMD config set-context --current --namespace=$ADCAP_K8S_NAMESPACE
+    $KUBECTL_CMD config view --minify | grep namespace
     $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/secret.yaml
     $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/env-configmap.yaml
     $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/rabbitmq-deployment.yaml
