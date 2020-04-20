@@ -25,6 +25,7 @@ fi
 
 # Directories relative to AD-Capital-K8s-Lab
 DIR_CLUSTER_AGENT="cluster-agent"
+DIR_ADCAP_APRROVAL="AD-Capital-K8s-Approval"
 
 # Output file names
 FILENAME_APPD_SECRETS="appdynamics-secrets.yaml"
@@ -192,9 +193,6 @@ spec:
   #  name: "<your-docker-pull-secret-name>
   nsToMonitor:
     - se-days
-    - default
-    - appdynamics
-    - kube-system
 EOF
 #####
 }
@@ -232,7 +230,18 @@ _AppDynamics_Install_ClusterAgent() {
 
   # Validate the Cluster Agent Pod has been created and is running, allow 1 minute for this to happen
   $KUBECTL_CMD -n appdynamics get pods
+}
 
+_AppDynamics_ClusterAgent_Check_AccessKey() {
+  kubectl get secrets/cluster-agent-secret -o jsonpath="{.data.controller-key}" | base64 --decode
+}
+
+_AppDynamics_Delete_ClusterAgent() {
+  _checkDirExists "Cluster Agent Install" $DIR_CLUSTER_AGENT
+  $KUBECTL_CMD delete -f $DIR_CLUSTER_AGENT/cluster-agent.yaml
+  $KUBECTL_CMD delete -f $DIR_CLUSTER_AGENT/cluster-agent-operator.yaml
+  $KUBECTL_CMD --namespace=appdynamics delete secret cluster-agent-secret
+  $KUBECTL_CMD delete namespace appdynamics
 }
 
 
@@ -257,34 +266,40 @@ case "$CMD_LIST" in
   appd-cluster-agent-deploy)
     _AppDynamics_Install_ClusterAgent
     ;;
+  appd-cluster-agent-delete)
+    _AppDynamics_Delete_ClusterAgent
+    ;;
+  appd_cluster-agent-check-access-key)
+    _AppDynamics_ClusterAgent_Check_AccessKey
+    ;;
   adcap-approval-configure-env)
     _makeAppD_makeConfigMap_appdynamics_secrets   "AD-Capital-K8s-Approval/$FILENAME_APPD_SECRETS"
     _makeAppD_makeConfigMap_appdynamics_common "AD-Capital-K8s-Approval/$FILENAME_APPD_CONFIGMAP"
     ;;
   adcap-approval)
     K8S_OP=${2:-"create"} # create | delete | apply
-    $KUBECTL_CMD config set-context --current --namespace=$ADCAP_K8S_NAMESPACE
+    #$KUBECTL_CMD config set-context --current --namespace=$ADCAP_K8S_NAMESPACE
     $KUBECTL_CMD config view --minify | grep namespace
-    $KUBECTL_CMD $K8S_OP -f adcap-approval-deployment.yaml
-    $KUBECTL_CMD $K8S_OP -f adcap-approval-configmap.yaml
-    $KUBECTL_CMD $K8S_OP -f $FILENAME_APPD_SECRETS
-    $KUBECTL_CMD $K8S_OP -f $FILENAME_APPD_CONFIGMAP
-    $KUBECTL_CMD $K8S_OP -f adcap-approval-appdynamics-configmap.yaml
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f "$DIR_ADCAP_APRROVAL/adcap-approval-deployment.yaml"
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f "$DIR_ADCAP_APRROVAL/adcap-approval-configmap.yaml"
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f "$DIR_ADCAP_APRROVAL/$FILENAME_APPD_SECRETS"
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f "$DIR_ADCAP_APRROVAL/$FILENAME_APPD_CONFIGMAP"
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f "$DIR_ADCAP_APRROVAL/adcap-approval-appdynamics-configmap.yaml"
     ;;
   adcap-v1)
     K8S_OP=${2:-"create"} # create | delete | apply
-    $KUBECTL_CMD config set-context --current --namespace=$ADCAP_K8S_NAMESPACE
+    #$KUBECTL_CMD config set-context --current --namespace=$ADCAP_K8S_NAMESPACE
     $KUBECTL_CMD config view --minify | grep namespace
-    $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/secret.yaml
-    $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/env-configmap.yaml
-    $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/rabbitmq-deployment.yaml
-    $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/rest-deployment.yaml
-    $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/adcapitaldb-deployment.yaml
-    $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/portal-deployment.yaml
-    $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/processor-deployment.yaml
-    $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/verification-deployment.yaml
-    $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/approval-deployment.yaml
-    $KUBECTL_CMD $K8S_OP -f AD-Capital-K8s-V1/load-deployment.yaml
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f AD-Capital-K8s-V1/secret.yaml
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f AD-Capital-K8s-V1/env-configmap.yaml
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f AD-Capital-K8s-V1/rabbitmq-deployment.yaml
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f AD-Capital-K8s-V1/rest-deployment.yaml
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f AD-Capital-K8s-V1/adcapitaldb-deployment.yaml
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f AD-Capital-K8s-V1/portal-deployment.yaml
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f AD-Capital-K8s-V1/processor-deployment.yaml
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f AD-Capital-K8s-V1/verification-deployment.yaml
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f AD-Capital-K8s-V1/approval-deployment.yaml
+    $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f AD-Capital-K8s-V1/load-deployment.yaml
     ;;
   help)
     echo "Commands: "
