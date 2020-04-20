@@ -255,10 +255,6 @@ case "$CMD_LIST" in
     _makeAppD_makeConfigMap_original_secrets AD-Capital-K8s-Harness/$FILENAME_ORIGINAL_SECRETS
     _makeAppD_makeConfigMap_original_env_map AD-Capital-K8s-Harness/$FILENAME_ORIGINAL_ENVMAP
     ;;
-  appd-adcap-v1-configure-env)
-    _makeAppD_makeConfigMap_original_env_map "AD-Capital-K8s-V1/$FILENAME_ORIGINAL_ENVMAP"
-    _makeAppD_makeConfigMap_original_secrets "AD-Capital-K8s-V1/$FILENAME_ORIGINAL_SECRETS"
-    ;;
   appd-cluster-agent-configure-env)
     _checkDirExists "Cluster Agent Install" $DIR_CLUSTER_AGENT
     _makeAppD_makeConfigMap_Cluster_Agent $DIR_CLUSTER_AGENT/$FILENAME_APPD_CLUSTER_AGENT_RESOURCE_FILE
@@ -286,6 +282,10 @@ case "$CMD_LIST" in
     $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f "$DIR_ADCAP_APRROVAL/$FILENAME_APPD_CONFIGMAP"
     $KUBECTL_CMD $K8S_OP --namespace=$ADCAP_K8S_NAMESPACE -f "$DIR_ADCAP_APRROVAL/adcap-approval-appdynamics-configmap.yaml"
     ;;
+  adcap-v1-configure-env)
+    _makeAppD_makeConfigMap_original_env_map "AD-Capital-K8s-V1/$FILENAME_ORIGINAL_ENVMAP"
+    _makeAppD_makeConfigMap_original_secrets "AD-Capital-K8s-V1/$FILENAME_ORIGINAL_SECRETS"
+    ;;
   adcap-v1)
     K8S_OP=${2:-"create"} # create | delete | apply
     #$KUBECTL_CMD config set-context --current --namespace=$ADCAP_K8S_NAMESPACE
@@ -304,15 +304,16 @@ case "$CMD_LIST" in
   help)
     echo "Commands: "
     echo ""
-    echo "appd-adcap-v1-configure-env  - Configure the configMaps in AD-Capital-K8s-V1"
-    echo "appd-harness-configure-env   - Configure the configMaps in AD-Capital-K8s-Harness"
-    echo "adcap-approval-configure-env - Configure the configMaps in AD-Capital-K8s-Approval"
-    echo ""
+    echo "adcap-v1-configure-env            - Configure the configMaps in AD-Capital-K8s-V1"
     echo "adcap-v1 [create | delete ]       - create/delete AD-Capital applications version 1 - all nodes"
+    echo ""
+    echo "adcap-approval-configure-env      - Configure the configMaps in AD-Capital-K8s-Approval"
     echo "adcap-approval [create | delete ] - create/delete AD-Capital Approvals Deployment"
     echo ""
     echo "appd-cluster-agent-configure-env - create the Cluster Agent resource file"
     echo "appd-cluster-agent-deploy        - deploy the AppDyamics Cluster Agent"
+    echo ""
+    echo "appd-harness-configure-env   - Configure the configMaps in AD-Capital-K8s-Harness"
     ;;
   *)
     echo "Not Found " "$@"
