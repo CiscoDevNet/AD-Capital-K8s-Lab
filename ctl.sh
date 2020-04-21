@@ -312,6 +312,7 @@ case "$CMD_LIST" in
     echo ""
     echo "appd-cluster-agent-configure-env - create the Cluster Agent resource file"
     echo "appd-cluster-agent-deploy        - deploy the AppDyamics Cluster Agent"
+    echo "appd-cluster-agent-delete        - delete the AppDyamics Cluster Agent"
     echo ""
     echo "appd-harness-configure-env   - Configure the configMaps in AD-Capital-K8s-Harness"
     ;;
