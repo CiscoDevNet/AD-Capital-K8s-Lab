@@ -1,3 +1,13 @@
-      # Modification-3 - Add a Container Volume
-      - name: appd-agent-java-install
-      # End Modification-3
+        # Modification-4 - Add Second Initialization Container
+        - name: appdynamics-java-agent
+          image: appdynamics/java-agent:20.3.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - cp
+            - -ra
+            - /opt/appdynamics/.
+            - /opt/appdynamics-agents/java/
+          volumeMounts:
+          - mountPath: /opt/appdynamics-agents/java
+            name: appd-agent-java-install
+        # End Modification-4
