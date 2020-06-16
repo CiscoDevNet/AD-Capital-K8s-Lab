@@ -9,7 +9,10 @@ Contains all of the K8s Resource Definition files to deploy Version 1 of AD-Capi
 Contains the tooling to automate the configuration of K8s Resource Definition files in `AD-Capital-K8s-V1`
 
 `AD-Capital-K8s-Harness`
-This is a fully instrumented independent version of the AD-Capital application. It combines the deployment resources from `AD-Capital-K8s-V1` and `AD-Capital-K8s-Approval` in readiness for the Harness section of this labs
+This is a fully instrumented independent version of the AD-Capital application. It combines the deployment resources from:
+`AD-Capital-K8s-V1` 
+and 
+`AD-Capital-K8s-Approval` in readiness for the Harness section of this labs
 
 `Rookout`
 This is a fully instrumented independent version of the AD-Capital application in readiness for the Rookout section of this lab.
