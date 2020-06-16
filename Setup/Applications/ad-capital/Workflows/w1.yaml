@@ -27,10 +27,13 @@ phases:
     name: Deploy
     steps:
     - type: K8S_APPLY
-      name: Apply
+      name: Apply ENV and Secret
       properties:
         filePaths: env-configmap.yaml, secret.yaml
         stateTimeoutInMinutes: 10
+        templateUuid: null
+        templateVariables: null
+        templateVersion: null
     stepsInParallel: false
   - type: K8S_PHASE_STEP
     name: Verify
