@@ -28,6 +28,11 @@ phases:
     steps:
     - type: K8S_DEPLOYMENT_ROLLING
       name: Rollout Deployment
+    - type: K8S_APPLY
+      name: Apply
+      properties:
+        filePaths: env-configmap.yaml, secret.yaml
+        stateTimeoutInMinutes: 10
     stepsInParallel: false
   - type: K8S_PHASE_STEP
     name: Verify
