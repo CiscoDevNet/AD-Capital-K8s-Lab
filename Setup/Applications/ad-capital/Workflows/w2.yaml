@@ -29,8 +29,11 @@ phases:
     - type: K8S_APPLY
       name: Apply db
       properties:
-        filePaths: adcapital-deployment.yaml, rabbitmq-deployment.yaml
+        filePaths: adcapitaldb-deployment.yaml, rabbitmq-deployment.yaml
         stateTimeoutInMinutes: 10
+        templateUuid: null
+        templateVariables: null
+        templateVersion: null
     stepsInParallel: false
   - type: K8S_PHASE_STEP
     name: Verify
