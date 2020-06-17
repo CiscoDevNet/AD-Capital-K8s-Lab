@@ -23,7 +23,7 @@ spec:
       containers:
       - env:
         - name: DUMMY
-          value: "v0"
+          value: "v1"
         - name: JAVA_TOOL_OPTIONS
           value: "-javaagent:/appdynamics/rook.jar"
         - name: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
