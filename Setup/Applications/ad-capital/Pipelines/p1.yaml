@@ -28,4 +28,4 @@ pipelineStages:
   skipCondition:
     type: DO_NOT_SKIP
   stageName: STAGE 4
-  workflowName: w4
+  workflowName: workflow-stage-04
