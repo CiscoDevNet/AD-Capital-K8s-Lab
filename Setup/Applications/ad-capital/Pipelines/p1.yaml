@@ -14,7 +14,7 @@ pipelineStages:
   skipCondition:
     type: DO_NOT_SKIP
   stageName: STAGE 2
-  workflowName: w2
+  workflowName: workflow-stage-02
 - type: ENV_STATE
   name: w3
   parallel: false
