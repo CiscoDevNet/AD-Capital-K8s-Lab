@@ -39,7 +39,7 @@ spec:
         - name: ROLE
           value: portal
         - name: APPDYNAMICS_AGENT_NODE_NAME
-          value: 
+          valueFrom: 
             fieldRef: 
               fieldPath: metadata.name
         - name: APPDYNAMICS_AGENT_TIER_NAME
